@@ -1,0 +1,25 @@
+Material Mat_Palm : Common/MatDefs/Light/Lighting.j3md {
+    MaterialParameters {
+        DiffuseMap : Repeat Models/Scene_MourningDoveSoft/diffuse.png
+        GlowColor : 0.0 0.0 0.0 1.0
+        Specular : 0.01 0.01 0.01 1.0
+        Diffuse : 0.64000005 0.64000005 0.64000005 1.0
+        UseMaterialColors : true
+        ParallaxHeight : 0.05
+        Ambient : 0.8 0.8 0.8 1.0
+        Shininess : 12.5
+        NormalMap : Repeat Models/Scene_MourningDoveSoft/normal.png
+        SpecularMap : Repeat Models/Scene_MourningDoveSoft/specular.png
+    }
+    AdditionalRenderState {
+      FaceCull Off
+      Wireframe Off
+      DepthWrite On
+      PolyOffset 0.0 0.0
+      AlphaTestFalloff 0.0
+      Blend Alpha
+      PointSprite Off
+      ColorWrite On
+      DepthTest On
+    }
+}
