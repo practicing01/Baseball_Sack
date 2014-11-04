@@ -25,7 +25,7 @@ import javax.imageio.ImageIO;
 public class Main extends SimpleApplication {
 
     public static BulletAppState bulletAppState;
-    public static ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+    public static ScheduledThreadPoolExecutor executor;// = new ScheduledThreadPoolExecutor(1);
 
     public static void main(String[] args) {
 
@@ -85,7 +85,9 @@ public class Main extends SimpleApplication {
     @Override
     public void destroy() {
         super.destroy();
-        executor.shutdownNow();
+        if (executor != null) {
+            executor.shutdownNow();
+        }
     }
 
     public static void appstate_delete(AbstractAppState state) {

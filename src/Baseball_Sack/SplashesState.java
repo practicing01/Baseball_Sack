@@ -58,9 +58,20 @@ public class SplashesState extends AbstractAppState implements Runnable {
     private AudioNode oga;
     private AudioNode jme;
     private SceneGraphVisitor visitor;
+    private float elapsedTime,tpfOffset,delayTime;
+    private boolean splashing = false;
 
     @Override
     public void update(float tpf) {
+        if (splashing == true) {
+            if (elapsedTime == -1f) {
+                tpfOffset = tpf;
+            }
+            elapsedTime += tpf;
+            if (elapsedTime - tpfOffset >= delayTime) {
+                run();
+            }
+        }
     }
 
     @Override
@@ -70,7 +81,9 @@ public class SplashesState extends AbstractAppState implements Runnable {
             Schedule_Handle.cancel(false);
         }
 
-        Main.executor.remove(this);
+        if (Main.executor != null) {
+            Main.executor.remove(this);
+        }
 
     }
 
@@ -201,7 +214,11 @@ public class SplashesState extends AbstractAppState implements Runnable {
 
         //Schedule_Handle = Main.executor.scheduleAtFixedRate(this, 0, 5, SECONDS);
 
-        Schedule_Handle = Main.executor.schedule(this, 5, SECONDS);
+        //Schedule_Handle = Main.executor.schedule(this, 5, SECONDS);
+        
+        elapsedTime = -1f;
+        delayTime = 5f;
+        splashing = true;
 
     }
 
@@ -252,7 +269,9 @@ public class SplashesState extends AbstractAppState implements Runnable {
                 public Object call() throws Exception {
                     Main.Clear_Scene(app, rootNode, bulletAppState);
                     Splash_OGA();
-                    SplashesState.this.Schedule_Handle = Main.executor.schedule(SplashesState.this, 5, SECONDS);
+                    //SplashesState.this.Schedule_Handle = Main.executor.schedule(SplashesState.this, 5, SECONDS);
+                    elapsedTime = -1f;
+                    delayTime = 5f;
                     return null;
                 }
             });
@@ -264,7 +283,9 @@ public class SplashesState extends AbstractAppState implements Runnable {
                 public Object call() throws Exception {
                     Main.Clear_Scene(app, rootNode, bulletAppState);
                     Splash_JME();
-                    SplashesState.this.Schedule_Handle = Main.executor.schedule(SplashesState.this, 3, SECONDS);
+                    //SplashesState.this.Schedule_Handle = Main.executor.schedule(SplashesState.this, 3, SECONDS);
+                    elapsedTime = -1f;
+                    delayTime = 3f;
                     return null;
                 }
             });
@@ -278,6 +299,8 @@ public class SplashesState extends AbstractAppState implements Runnable {
                     return null;
                 }
             });
+            
+            splashing = false;
 
             stateManager.detach(this);
 
